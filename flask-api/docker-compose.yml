@@ -1,0 +1,10 @@
+version: "2"
+services:
+  app:
+    container_name: flask-api
+    build:
+      context: .
+    volumes:
+      - ./:/api
+    ports:
+      - 5000:5000
