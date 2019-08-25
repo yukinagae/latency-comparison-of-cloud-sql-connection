@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test
+  labels:
+    app: test
+spec:
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+    spec:
+      containers:
+        - name: flask-api
+          image: gcr.io/[Your Project ID]/flask-api:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DB_USER
+              value: proxyuser
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.14
+          command: [
+              "/cloud_sql_proxy",
+              "-instances=yukinagae-sql-proxy-test:us-central1:yukinagae-23ae509e9b2ee518=tcp:3306",
+              # If running on a VPC, the Cloud SQL proxy can connect via Private IP. See:
+              # https://cloud.google.com/sql/docs/mysql/private-ip for more info.
+              # "-ip_address_types=PRIVATE",
+              "-credential_file=/secrets/cloudsql/credentials.json",
+            ]
+          securityContext:
+            runAsUser: 2 # non-root user
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+      volumes:
+        - name: cloudsql-instance-credentials
+          secret:
+            secretName: cloudsql-instance-credentials
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: test
+  labels:
+    app: test
+spec:
+  selector:
+    app: test
+  ports:
+    - port: 80
+      targetPort: 5000
+  type: LoadBalancer
