@@ -8,8 +8,11 @@ verify_ssl = true
 [packages]
 flask = "*"
 PyMySQL = "*"
+google-cloud-trace = "*"
+google-auth = "*"
 opencensus = "*"
 opencensus-ext-flask = "*"
+opencensus-ext-stackdriver = "*"
 opencensus-ext-pymysql = "*"
 
 [requires]

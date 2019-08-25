@@ -1,6 +1,7 @@
 import os
 from flask import Flask, jsonify
 import pymysql
+import google.auth
 
 from opencensus.ext.flask.flask_middleware import FlaskMiddleware
 from opencensus.ext.stackdriver import trace_exporter as stackdriver_exporter
@@ -11,7 +12,11 @@ from opencensus.trace import samplers
 app = Flask(__name__)
 
 INTEGRATIONS = ["pymysql"]
-exporter = stackdriver_exporter.StackdriverExporter()
+
+_, project_id = google.auth.default()
+exporter = stackdriver_exporter.StackdriverExporter(
+    project_id=project_id
+)
 sampler = samplers.ProbabilitySampler(rate=1)
 middleware = FlaskMiddleware(app, exporter=exporter, sampler=sampler)
 config_integration.trace_integrations(INTEGRATIONS)
