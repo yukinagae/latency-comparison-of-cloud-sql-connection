@@ -14,11 +14,11 @@ resource "google_sql_database_instance" "main" {
       zone = "us-central1-a"
     }
 
-    # ip_configuration {
-    #   ipv4_enabled = "true"
-    #   require_ssl = "false"
-    #   private_network = "${var.vpc_self_link}"
-    # }
+    ip_configuration {
+      ipv4_enabled    = "true"
+      require_ssl     = "false"
+      private_network = google_compute_network.private_network.self_link
+    }
 
     database_flags {
       name  = "log_output"
@@ -34,7 +34,10 @@ resource "google_sql_database_instance" "main" {
     }
   }
 
-  depends_on = [random_id.sql_database_suffix]
+  depends_on = [
+    google_service_networking_connection.private_vpc_connection,
+    random_id.sql_database_suffix
+  ]
 }
 
 resource "random_id" "sql_database_suffix" {
