@@ -20,11 +20,11 @@ spec:
             - containerPort: 5000
           env:
             - name: DB_HOST
-              value:
+              value: [Your Cloud SQL Private IP]
             - name: DB_USER
               value: root
             - name: DB_PASS
-              value:
+              value: [Your Cloud SQL root user password]
           livenessProbe:
             httpGet:
               path: /liveness

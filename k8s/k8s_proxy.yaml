@@ -38,7 +38,7 @@ spec:
           command:
             [
               "/cloud_sql_proxy",
-              "-instances=yukinagae-sql-proxy-test:us-central1:yukinagae-11acd850bc3133db=tcp:3306",
+              "-instances=[INSTANCE_CONNECTION_NAME]=tcp:3306",
               "-credential_file=/secrets/cloudsql/credentials.json",
             ]
           securityContext:
