@@ -31,6 +31,16 @@ This repository compares latencies between connection via proxy and connection v
 ./enable_services.sh
 ```
 
+## Dockernize Flask container
+
+```bash
+cd flask-api
+docker build -t gcr.io/[Your Project ID]/flask-api:latest .
+
+gcloud auth configure-docker
+docker push gcr.io/[Your Project ID]/flask-api:latest
+```
+
 ## Terraform
 
 * Install [tfenv](https://github.com/tfutils/tfenv)
@@ -40,16 +50,6 @@ This repository compares latencies between connection via proxy and connection v
 
 ```your.tfvars
 project = "[Your Project ID]"
-```
-
-## Dockernize Flask container
-
-```bash
-cd flask-api
-docker build -t gcr.io/[Your Project ID]/flask-api:latest .
-
-gcloud auth configure-docker
-docker push gcr.io/[Your Project ID]/flask-api:latest
 ```
 
 ## GKE
