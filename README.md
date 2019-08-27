@@ -79,6 +79,8 @@ or
 kubectl apply -f k8s_private_ip.yaml
 ```
 
+### Stackdrive Trace
+
 Access to Stackdriver Trace and now you can see latency!
 
 ## Caution
