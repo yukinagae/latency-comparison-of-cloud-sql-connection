@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test
+  labels:
+    app: test
+spec:
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+    spec:
+      containers:
+        - name: flask-api
+          image: gcr.io/yukinagae-sql-proxy-test/flask-api:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DB_HOST
+              value:
+            - name: DB_USER
+              value: root
+            - name: DB_PASS
+              value:
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: 5000
+            initialDelaySeconds: 3
+            periodSeconds: 1
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: 5000
+            initialDelaySeconds: 3
+            periodSeconds: 1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: test
+  labels:
+    app: test
+spec:
+  selector:
+    app: test
+  ports:
+    - port: 80
+      targetPort: 5000
+  type: LoadBalancer

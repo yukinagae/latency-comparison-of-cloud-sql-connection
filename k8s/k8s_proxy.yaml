@@ -15,20 +15,30 @@ spec:
     spec:
       containers:
         - name: flask-api
-          image: gcr.io/[Your Project ID]/flask-api:latest
+          image: gcr.io/yukinagae-sql-proxy-test/flask-api:latest
           ports:
             - containerPort: 5000
           env:
             - name: DB_USER
               value: proxyuser
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: 5000
+            initialDelaySeconds: 3
+            periodSeconds: 1
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: 5000
+            initialDelaySeconds: 3
+            periodSeconds: 1
         - name: cloudsql-proxy
           image: gcr.io/cloudsql-docker/gce-proxy:1.14
-          command: [
+          command:
+            [
               "/cloud_sql_proxy",
-              "-instances=yukinagae-sql-proxy-test:us-central1:yukinagae-23ae509e9b2ee518=tcp:3306",
-              # If running on a VPC, the Cloud SQL proxy can connect via Private IP. See:
-              # https://cloud.google.com/sql/docs/mysql/private-ip for more info.
-              # "-ip_address_types=PRIVATE",
+              "-instances=yukinagae-sql-proxy-test:us-central1:yukinagae-11acd850bc3133db=tcp:3306",
               "-credential_file=/secrets/cloudsql/credentials.json",
             ]
           securityContext:
