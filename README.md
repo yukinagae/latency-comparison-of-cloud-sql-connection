@@ -79,6 +79,8 @@ or
 kubectl apply -f k8s_private_ip.yaml
 ```
 
+Access to Stackdriver Trace and now you can see latency!
+
 ## Caution
 
 You may have to delete all the pods before applying new pods because of insufficient resources for the new pods. In that case, run the following command to delete all the pods before applying the new ones:
