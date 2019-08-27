@@ -72,3 +72,10 @@ You may have to delete all the pods before applying new pods because of insuffic
 ```bash
 kubectl delete deployment test
 ```
+
+## Clean up and don't waste your money!
+
+```bash
+cd terraform
+terraform destroy # and type [Your Project ID]
+```
