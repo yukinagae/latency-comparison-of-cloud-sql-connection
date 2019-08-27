@@ -6,7 +6,21 @@ This repository compares latencies between connection via proxy and connection v
 
 ![proxy](./images/proxy.png)
 
-## First of all, Authentication
+## First of all
+
+### Requirements
+
+* Create a GCP project: see [Creating and Managing Projects](https://cloud.google.com/resource-manager/docs/creating-managing-projects)
+  * You can create a GCP project on browser or `gcloud projects create [Your Project ID]` if you already have `gcloud` on your machine.
+* Billing is enabled for the project
+* Install `gcloud`: see [Cloud SDK Quickstarts](https://cloud.google.com/sdk/docs/quickstarts)
+
+### Install and Update gcloud components
+
+* `gcloud components update`
+* `gcloud components install beta`
+
+### Authentication
 
 * `gcloud auth application-default login`
 * `gcloud config set project [Your Project ID]`
