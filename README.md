@@ -1,4 +1,4 @@
-# Cloud SQL Proxy Test
+# Latency Comparison to Cloud SQL Connection
 
 This repository compares latencies between connection via proxy and connection via private IP.
 
