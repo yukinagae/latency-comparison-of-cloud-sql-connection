@@ -23,6 +23,7 @@ config_integration.trace_integrations(INTEGRATIONS)
 
 DB_HOST = os.getenv("DB_HOST", "localhost")
 DB_USER = os.getenv("DB_USER")
+DB_PASS = os.getenv("DB_PASS")
 
 
 @app.route('/')
@@ -35,6 +36,10 @@ def liveness():
 
 @app.route('/readiness')
 def readiness():
-    conn = pymysql.connect(host=DB_HOST, port=3306, user=DB_USER, db='mysql')
-    conn.close()
+    if DB_PASS:
+        conn = pymysql.connect(user=DB_USER, password=DB_PASS, host=DB_HOST, port=3306, db='mysql')
+        conn.close()
+    else:
+        conn = pymysql.connect(user=DB_USER, host=DB_HOST, port=3306, db='mysql')
+        conn.close()
     return jsonify(status="OK", route="readiness")

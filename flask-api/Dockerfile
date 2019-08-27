@@ -7,7 +7,7 @@ WORKDIR /api
 
 RUN apt-get update && \
     apt-get -y upgrade && \
-    apt-get install -y build-essential curl
+    apt-get install -y build-essential curl mariadb-client
 
 RUN pip install --upgrade setuptools && \
     pip install pipenv
