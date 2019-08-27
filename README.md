@@ -1,6 +1,12 @@
 # Cloud SQL Proxy Test
 
-## Auth
+This repository compares latencies between connection via proxy and connection via private IP.
+
+## Result
+
+![proxy](./images/proxy.png)
+
+## First of all, Authentication
 
 * `gcloud auth application-default login`
 * `gcloud config set project [Your Project ID]`
@@ -43,11 +49,26 @@ Create a secret from credential file (which is a credential json file for a serv
 ```bash
 cd k8s
 kubectl create secret generic cloudsql-instance-credentials --from-file=./credentials.json
-
 ```
 
-Deploy k8s
+### Deploy k8s with proxy
 
 ```bash
-kubectl apply -f k8s.yaml
+kubectl apply -f k8s_proxy.yaml
+```
+
+or
+
+### Deploy k8s with private IP
+
+```bash
+kubectl apply -f k8s_private_ip.yaml
+```
+
+## Caution
+
+You may have to delete all the pods before applying new pods because of insufficient resources for the new pods. In that case, run the following command to delete all the pods before applying the new ones:
+
+```bash
+kubectl delete deployment test
 ```
