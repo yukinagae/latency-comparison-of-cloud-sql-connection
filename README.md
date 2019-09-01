@@ -55,6 +55,7 @@ docker push gcr.io/[Your Project ID]/flask-api:latest
 
 ## Terraform
 
+* `cd terraform` to move the directory
 * Install [tfenv](https://github.com/tfutils/tfenv)
 * Run `tfenv install` to download terraform with version specified in `.terraform-version` file
 * `terraform init`
