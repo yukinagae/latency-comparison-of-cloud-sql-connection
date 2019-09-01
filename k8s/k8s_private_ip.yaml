@@ -15,22 +15,23 @@ spec:
     spec:
       containers:
         - name: flask-api
-          image: gcr.io/yukinagae-sql-proxy-test/flask-api:latest
+          image: gcr.io/[Your Project ID]/flask-api:latest
           ports:
             - containerPort: 5000
           env:
             - name: DB_HOST
-              value: [Your Cloud SQL Private IP]
+              value: [DB_PRIVATE_IP]
             - name: DB_USER
               value: root
             - name: DB_PASS
-              value: [Your Cloud SQL root user password]
-          livenessProbe:
-            httpGet:
-              path: /liveness
-              port: 5000
-            initialDelaySeconds: 3
-            periodSeconds: 1
+              value: [ROOT_USER_PASSWORD]
+          # MEMO: `livenessProbe` is recommended to be implemented for production.
+          # livenessProbe:
+          #   httpGet:
+          #     path: /liveness
+          #     port: 5000
+          #   initialDelaySeconds: 3
+          #   periodSeconds: 1
           readinessProbe:
             httpGet:
               path: /readiness

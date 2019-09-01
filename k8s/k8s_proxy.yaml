@@ -15,18 +15,19 @@ spec:
     spec:
       containers:
         - name: flask-api
-          image: gcr.io/yukinagae-sql-proxy-test/flask-api:latest
+          image: gcr.io/[Your Project ID]/flask-api:latest
           ports:
             - containerPort: 5000
           env:
             - name: DB_USER
               value: proxyuser
-          livenessProbe:
-            httpGet:
-              path: /liveness
-              port: 5000
-            initialDelaySeconds: 3
-            periodSeconds: 1
+          # MEMO: `livenessProbe` is recommended to be implemented for production.
+          # livenessProbe:
+          #   httpGet:
+          #     path: /liveness
+          #     port: 5000
+          #   initialDelaySeconds: 3
+          #   periodSeconds: 1
           readinessProbe:
             httpGet:
               path: /readiness

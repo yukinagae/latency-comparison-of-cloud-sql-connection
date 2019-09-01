@@ -4,9 +4,21 @@ This repository compares latencies between connection via proxy and connection v
 
 ## Result
 
+* Proxy
+  * Min: At least 10ms
+  * Avg: 20ms
+  * Max: Around 40ms in this time span, but there can be peaks more than that with several reasons (ex. the credential of Cloud SQL is expired etc)
+
 ![proxy](./images/proxy.png)
 
-## First of all
+* Private IP
+  * Min: At least 7ms
+  * Avg: 7ms
+  * Max: Around1 15ms in this time span, but there can be peaks more than that with several reasons (ex. a pod creation of the new SQL connection etc)
+
+![private_ip](./images/private_ip.png)
+
+## Examine the results by yourself
 
 ### Requirements
 
@@ -54,11 +66,35 @@ project = "[Your Project ID]"
 
 ## GKE
 
+### Connect to cluster
+
 ```bash
 gcloud container clusters get-credentials my-gke-cluster
 ```
 
-Create a secret from credential file (which is a credential json file for a service account you must create)
+### Create a service account as a secret
+
+This step creates a service account to connect with Cloud SQL using proxy. If you want to use only Private IP connection, you can skip this step.
+
+* SA NAME: Service Account Name
+  * ex) proxy-db
+* SA DISPLAY NAME: Service Display Name
+  * ex) proxy-db
+
+```bash
+gcloud beta iam service-accounts create [SA NAME] \
+ --display-name "[SA DISPLAY NAME]" \
+ --project [Your Project ID]
+
+gcloud projects add-iam-policy-binding [Your Project ID] \
+   --member serviceAccount:[SA NAME]@[Your Project ID].iam.gserviceaccount.com \
+   --role roles/cloudsql.admin
+
+gcloud iam service-accounts keys create ./k8s/credentials.json \
+   --iam-account [SA NAME]@[YOur Project ID].iam.gserviceaccount.com
+```
+
+Create a secret from credential file (json)
 
 ```bash
 cd k8s
@@ -67,13 +103,41 @@ kubectl create secret generic cloudsql-instance-credentials --from-file=./creden
 
 ### Deploy k8s with proxy
 
+### Before deployment
+
+Before deployment, replace the below values in `k8s_proxy.yaml`:
+
+* [Your Project ID]: Your Project ID
+* [INSTANCE_CONNECTION_NAME]: Your can check it on browser like below:
+
+![cloud sql info](./images/cloud_sql_info.png)
+
+### Deploy
+
 ```bash
 kubectl apply -f k8s_proxy.yaml
 ```
 
-or
-
 ### Deploy k8s with private IP
+
+### Before deployment
+
+Before deployment, replace the below values in `k8s_private_ip.yaml`:
+
+* [Your Project ID]: Your Project ID
+* [DB_PRIVATE_IP]: Private IP address of your Cloud SQL Instance
+* [ROOT_USER_PASSWORD]: Password for database root user
+  * you can see it after you run `terraform apply` with something like this:
+
+```bash
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+sql_password_root = [root user password]
+```
+
+#### Deploy
 
 ```bash
 kubectl apply -f k8s_private_ip.yaml
