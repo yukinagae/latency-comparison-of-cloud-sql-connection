@@ -159,15 +159,19 @@ kubectl delete deployment test
 
 ## Clean up and don't waste your money!
 
-Delete all the resources created by terraform
+Simply your can delete the GCP project
+
+```bash
+gcloud projects delete [Your Projecdt ID]
+```
+
+## Known issues 
+
+To delete all the resources created by terraform you can run:
 
 ```bash
 cd terraform
 terraform destroy # and type [Your Project ID]
 ```
 
-Or simply your can delete the GCP project
-
-```bash
-gcloud projects delete [Your Projecdt ID]
-```
+It should work but this will be failed because `google_service_networking_connection.private_vpc_connection` cannot be destroyed with the error `Error: project: required field is not set` for some reasons.
