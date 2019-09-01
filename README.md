@@ -26,6 +26,7 @@ This repository compares latencies between connection via proxy and connection v
   * You can create a GCP project on browser or `gcloud projects create [Your Project ID]` if you already have `gcloud` on your machine.
 * Billing is enabled for the project
 * Install `gcloud`: see [Cloud SDK Quickstarts](https://cloud.google.com/sdk/docs/quickstarts)
+* Install `kubectl`: see [Install and Set Up kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 
 ### Install and Update gcloud components
 
