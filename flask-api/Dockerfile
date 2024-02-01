@@ -1,4 +1,4 @@
-FROM python:3.7.3-slim
+FROM python:3.13.0a3-slim
 LABEL  maintainer "Yuki Nagae <yuki.nagae1130@gmail.com>"
 ENV TZ Asia/Tokyo
 
